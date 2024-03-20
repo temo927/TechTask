@@ -48,7 +48,6 @@ return [
             'driver' => 'session',
             'provider' => 'player',
         ],
-
     ],
 
     /*
