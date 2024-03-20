@@ -1,0 +1,65 @@
+version: "3.7"
+services:
+    app-lar-live-code:
+        build:
+            args:
+                user: sammy
+                uid: 1000
+            context: ./
+            dockerfile: Dockerfile
+        image: laravel-live-coding-app
+        container_name: laravel-live-coding-live-coding
+        restart: unless-stopped
+        working_dir: /var/www/laravel-live-coding-live-coding
+        volumes:
+            - ./:/var/www/laravel-live-coding-live-coding
+            - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+        networks:
+            - laravel-live-coding
+        links:
+            - db-lar-live-code
+            - redis-db
+
+    db-lar-live-code:
+        image: postgres:16.0-bullseye
+        container_name: laravel-live-coding-live-coding-db
+        restart: on-failure
+        environment:
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_USER: ${DB_USERNAME}
+            POSTGRES_DB: ${DB_DATABASE}
+        volumes:
+            - db-data:/var/lib/postgresql/data
+        ports:
+            - ${DB_HOST_PORT:-5432}:5432
+        cap_add:
+            - SYS_NICE  # CAP_SYS_NICE
+        networks:
+            - laravel-live-coding
+
+    nginx-lar-live-code:
+        image: nginx:1.18.0-alpine
+        container_name: laravel-live-coding-live-coding-nginx
+        restart: unless-stopped
+        ports:
+            - "8010:80"
+        volumes:
+            - ./public:/var/www/laravel-live-coding-live-coding/public
+            - ./docker/nginx/vhost.conf:/etc/nginx/conf.d/default.conf
+        networks:
+            - laravel-live-coding
+
+    redis-db: # New Redis service
+        image: redis:latest
+        container_name: laravel-live-coding-redis
+        restart: unless-stopped
+        networks:
+            - laravel-live-coding
+
+networks:
+    laravel-live-coding:
+        driver: bridge
+
+volumes:
+    db-data:
+        driver: local
