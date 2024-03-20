@@ -20,9 +20,16 @@ class Player extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
+        'username',
+        'first_name',
+        'last_name',
+        'gender',
+        'lang',
         'email',
+        'rank_id',
         'password',
+        'balance',
+        'is_blocked',
     ];
 
     /**

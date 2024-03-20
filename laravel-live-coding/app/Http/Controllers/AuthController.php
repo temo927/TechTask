@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
-use App\Models\Admin;
-use App\Models\Player;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController
@@ -47,21 +46,13 @@ class AuthController
         $data = $request->only(['name', 'email', 'password', 'role']);
 
         // Create a new user based on the role
-        if ($data['role'] === 'admin') {
-            $user = Admin::create([
+
+            $user = User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => bcrypt($data['password']),
+                'role'=> $data['role']
             ]);
-        } elseif ($data['role'] === 'player') {
-            $user = Player::create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'password' => bcrypt($data['password']),
-            ]);
-        } else {
-            return response()->json(['error' => 'Invalid role'], 400);
-        }
 
         $token = $user->createToken($data['role'] . ' Token')->plainTextToken;
 
