@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\Admin;
 use App\Models\Player;
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController
 {
-    public function login(StoreUserRequest $request)
+    public function login(LoginUserRequest $request)
     {
         // Validate the incoming request data
         $validatedData = $request->validate([
@@ -20,14 +21,20 @@ class AuthController
 
         // Attempt to authenticate the user based on the role
         if ($validatedData['role'] === 'admin') {
-            if (Auth::guard('admin')->attempt(['email' => $validatedData['email'], 'password' => $validatedData['password']])) {
+            $credentials = $request->only('email', 'password');
+            if (Auth::guard('admin')->attempt($credentials)) {
                 // Authentication passed for admin
-                return response()->json(['message' => 'Admin authenticated successfully'], 200);
+                $user = Auth::guard('admin')->user();
+                $token = $user->createToken('Admin Token')->plainTextToken;
+                return response()->json(['token' => $token, 'message' => 'Admin logged in successfully'], 200);
             }
         } elseif ($validatedData['role'] === 'player') {
-            if (Auth::guard('player')->attempt(['email' => $validatedData['email'], 'password' => $validatedData['password']])) {
+            $credentials = $request->only('email', 'password');
+            if (Auth::guard('player')->attempt($credentials)) {
                 // Authentication passed for player
-                return response()->json(['message' => 'Player authenticated successfully'], 200);
+                $user = Auth::guard('player')->user();
+                $token = $user->createToken('Player Token')->plainTextToken;
+                return response()->json(['token' => $token, 'message' => 'Player logged in successfully'], 200);
             }
         }
 
