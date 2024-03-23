@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             PlayerSeeder::class,
             RankSeeder::class,
-            PrizeSeeder::class
+            PrizeSeeder::class,
+            SettingsTableSeeder::class
             // Add other seeder classes here
         ]);
     }
