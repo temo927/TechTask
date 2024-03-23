@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PrizeController;
+use App\Http\Controllers\RankGroupController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -28,4 +29,5 @@ Route::post('/login', [AuthController::class, 'login']);
 //Protected routes
 Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/admin/prizes', [PrizeController::class, 'store']);
+    Route::post('/admin/group-ranks', [RankGroupController::class, 'groupRanksByCategory']);
 });

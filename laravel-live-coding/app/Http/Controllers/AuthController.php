@@ -24,6 +24,9 @@ class AuthController
             if (Auth::guard('admin')->attempt($credentials)) {
                 // Authentication passed for admin
                 $user = Auth::guard('admin')->user();
+                // Revoke all of the user's tokens
+                $user->tokens()->delete();
+                // Create a new token
                 $token = $user->createToken('Admin Token')->plainTextToken;
                 return response()->json(['token' => $token, 'message' => 'Admin logged in successfully'], 200);
             }
@@ -32,13 +35,16 @@ class AuthController
             if (Auth::guard('player')->attempt($credentials)) {
                 // Authentication passed for player
                 $user = Auth::guard('player')->user();
+                // Revoke all of the user's tokens
+                $user->tokens()->delete();
+                // Create a new token
                 $token = $user->createToken('Player Token')->plainTextToken;
                 return response()->json(['token' => $token, 'message' => 'Player logged in successfully'], 200);
             }
         }
 
-        // Authentication failed
-        return response()->json(['error' => 'Unauthorized'], 401);
+        // If authentication fails, return error response
+        return response()->json(['message' => 'Unauthorized'], 401);
     }
 
     public function register(StoreUserRequest $request) : string
