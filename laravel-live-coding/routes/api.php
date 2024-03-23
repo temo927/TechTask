@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PrizeAssignmentController;
 use App\Http\Controllers\PrizeController;
 use App\Http\Controllers\RankGroupController;
 use Illuminate\Http\Request;
@@ -30,4 +31,5 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/admin/prizes', [PrizeController::class, 'store']);
     Route::post('/admin/group-ranks', [RankGroupController::class, 'groupRanksByCategory']);
+    Route::post('/admin/prizes/assign', [PrizeAssignmentController::class, 'assignPrizes']);
 });
