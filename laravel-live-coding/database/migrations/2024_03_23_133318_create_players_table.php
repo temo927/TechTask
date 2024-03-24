@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('password');
             $table->decimal('balance', 10, 4)->default(0.0000);
             $table->boolean('is_blocked')->default(false);
+            $table->timestamp('last_spin_time')->nullable(); // Add last_spin_time column
             $table->timestamps();
         });
     }

@@ -74,17 +74,17 @@ return [
             'table' => 'user',
         ],
 
-         'users' => [
-             'driver' => 'database',
-             'table' => 'users',
-         ],
+//         'users' => [
+//             'driver' => 'database',
+//             'table' => 'users',
+//         ],
         'admins' => [
             'driver' => 'eloquent',
-            'model' => \App\Models\User::class
+            'model' => \App\Models\Admin::class
         ],
         'player' => [
             'driver' => 'eloquent',
-            'model' => \App\Models\User::class
+            'model' => \App\Models\Player::class
         ],
     ],
 

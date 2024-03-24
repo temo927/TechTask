@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PrizeAssignmentController;
 use App\Http\Controllers\PrizeController;
+use App\Http\Controllers\PrizeWinningController;
 use App\Http\Controllers\RankGroupController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,7 +25,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 ///Public routes
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/register/player', [AuthController::class, 'PlayerRegister']);
+Route::post('/register/admin', [AuthController::class, 'AdminRegister']);
 Route::post('/login', [AuthController::class, 'login']);
 
 //Protected routes
@@ -32,4 +34,5 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/admin/prizes', [PrizeController::class, 'store']);
     Route::post('/admin/group-ranks', [RankGroupController::class, 'groupRanksByCategory']);
     Route::post('/admin/prizes/assign', [PrizeAssignmentController::class, 'assignPrizes']);
+    Route::post('/player/spin', [PrizeWinningController::class, 'checkPrize']);
 });
