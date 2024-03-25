@@ -9,7 +9,8 @@ use Illuminate\Validation\ValidationException;
 
 class PrizeController extends Controller
 {
-    public function store(Request $request): JsonResponse
+
+    public function storePrize(Request $request): JsonResponse
     {
         try {
             // Validate incoming request data

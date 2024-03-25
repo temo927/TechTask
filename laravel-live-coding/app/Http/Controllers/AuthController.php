@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\LoginUserRequest;
-use App\Http\Requests\StoreUserRequest;
 use App\Models\Admin;
 use App\Models\Player;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController
 {
-    public function login(LoginUserRequest $request)
+    public function login(Request $request)
     {
         // Validate the incoming request data
         $validatedData = $request->validate([

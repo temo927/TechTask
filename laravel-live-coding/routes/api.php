@@ -31,7 +31,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 //Protected routes
 Route::group(['middleware'=>'auth:sanctum'],function (){
-    Route::post('/admin/prizes', [PrizeController::class, 'store']);
+    Route::post('/admin/prizes', [PrizeController::class, 'storePrize']);
     Route::post('/admin/group-ranks', [RankGroupController::class, 'groupRanksByCategory']);
     Route::post('/admin/prizes/assign', [PrizeAssignmentController::class, 'assignPrizes']);
     Route::post('/player/spin', [PrizeWinningController::class, 'checkPrize']);
